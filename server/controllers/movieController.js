@@ -19,28 +19,67 @@ export const searchMovies = async (req, res) => {
     }
 };
 
+export const  getTrendings = async (req, res) => {
+    try {
+        const response = await axios.get(`${tmdb_url}/trending/movie/week`, {
+            params: { api_key: tmdb_api }
+        });
+
+        res.json(response.data.results);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch trending movies", details: error.message });
+    }
+}
+
 export const getMovieDetails = async (req, res) => {
     try {
         const { id } = req.params;
+        
+        if (!id) {
+            return res.status(400).json({ 
+                error: "Movie ID is required",
+                details: "No movie ID provided in the request" 
+            });
+        }
+
         const response = await axios.get(`${tmdb_url}/movie/${id}`, {
             params: { api_key: tmdb_api }
         });
 
+        if (!response.data) {
+            return res.status(404).json({ 
+                error: "Movie not found",
+                details: `No movie found with ID: ${id}` 
+            });
+        }
+
         res.json(response.data);
     } catch (error) {
-        res.status(500).json({ error: "Failed to fetch movie details", details: error.message });
+        console.error('Movie details error:', error);
+        res.status(500).json({ 
+            error: "Failed to fetch movie details", 
+            details: error.message 
+        });
     }
 };
 
 export const saveMovie = async (req, res) => {
     try {
-        const { title, id, poster_path, overview } = req.body;
-        
+        const { title, id, poster_path, overview ,release_rate,vote_average,runtime,genres } = req.body;
+        const existingMovie = await Movie.findOne({ movieId: id });
+        if (existingMovie) {
+            return res.status(400).json({ error: "Movie already added" });
+        }
         const movie = new Movie({
             title,
             movieId: id,
             poster_path,
-            overview
+            overview,
+            release_rate,
+            vote_average,
+            runtime,
+            genres
+            
         });
 
         const savedMovie = await movie.save();
@@ -50,15 +89,3 @@ export const saveMovie = async (req, res) => {
     }
 };
 
-// export const getMovieCredits = async (req, res) => {
-//     try {
-//         const { id } = req.params;
-//         const response = await axios.get(`${tmdb_url}/movie/${id}/credits`, {
-//             params: { api_key: tmdb_api }
-//         });
-
-//         res.json(response.data);
-//     } catch (error) {
-//         res.status(500).json({ error: "Failed to fetch movie credits", details: error.message });
-//     }
-// };
