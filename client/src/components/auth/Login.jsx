@@ -1,9 +1,42 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { EyeIcon ,EyeClosedIcon } from 'lucide-react';
+import axios from 'axios';
+import { useConfig } from '../../context/ConfigContext';
 function Login() {
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const navigate = useNavigate();
+    const [password, setPassword] = useState("");
     const [isLogin, setIsLogin] = useState(true);
+    const {server} = useConfig();
+    const registerUser = async()=>{
+        try{
+            const data = {username,email,password};
+            const res = await axios.post(`${server}/api/auth/register`,data);
+            if(res.status === 200){
+                console.log("User registered successfully")
+            }
+        }catch(err){
+           console.log(err.response.data.error);
+        }
+    }
+    const loginUser = async()=>{
+        try{
+            const data = {email,password};
+           const res = await axios.post(`${server}/api/auth/login`,data);
+            const token = res.data.token;
+            if(res.status== 200){
+                localStorage.setItem("token", token);
+                console.log("User logged in successfully");
+                navigate("/");
+                localStorage.setItem("user",JSON.stringify(res.data));  
+            }
+        }catch(err){
+            console.error(err);
+        }
+    }
 
     const [showPassword, setShowPassword] = useState(false);
    
@@ -44,6 +77,8 @@ function Login() {
                                         Username
                                     </label>
                                     <input 
+                                    value={username}
+                                        onChange={(e)=>setUsername(e.target.value)}
                                         type="text"
                                         className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:border-purple-500"
                                         placeholder="Enter your username"
@@ -56,6 +91,8 @@ function Login() {
                                     Email
                                 </label>
                                 <input 
+                                value={email}
+                                onChange={(e)=>setEmail(e.target.value)}
                                     type="email"
                                     className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:border-purple-500"
                                     placeholder="Enter your email"
@@ -68,6 +105,8 @@ function Login() {
                                 </label>
                                 <div className="relative">
                                     <input 
+                                    value ={password}
+                                    onChange={(e)=>setPassword(e.target.value)}
                                         type={showPassword ? "text" : "password"}
                                         className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white "
                                         placeholder="Enter your password"
@@ -85,6 +124,7 @@ function Login() {
                             </div>
 
                             <motion.button
+                            onClick={isLogin?()=>loginUser():()=>registerUser()}
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
                                 className="w-full py-3 rounded-lg bg-purple-500 cursor-pointer text-white"

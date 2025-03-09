@@ -13,7 +13,7 @@ function Home() {
   const {server, imageBaseUrl,hide} = useConfig();
   const [trendingMovie, setTrendingMovie] = useState(null);
   const [availMovies, setAvailMovies] = useState([]);
-
+  
 
   async function getTrending() {
     try {
@@ -38,6 +38,10 @@ function Home() {
   }
 
   useEffect(() => {
+    const data = localStorage.getItem("user");
+    if(!data){
+      navigate("/login");
+    }
     getTrending();
     getMoviesfromDB();
   }, []);

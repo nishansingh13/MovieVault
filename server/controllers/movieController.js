@@ -1,7 +1,6 @@
 import axios from 'axios';
 import Movie from '../models/Movie.js';
 
-const tmdb_api = "6c420884d135e913472960df62122413";
 const tmdb_url = "https://api.themoviedb.org/3";
 
 export const searchMovies = async (req, res) => {
@@ -10,7 +9,7 @@ export const searchMovies = async (req, res) => {
         if (!search) return res.status(400).json({ error: "Movie title is required" });
 
         const response = await axios.get(`${tmdb_url}/search/movie`, {
-            params: { api_key: tmdb_api, query:search }
+            params: { api_key: process.env.tmdb_api, query:search }
         });
 
         res.json(response.data);
@@ -22,7 +21,7 @@ export const searchMovies = async (req, res) => {
 export const  getTrendings = async (req, res) => {
     try {
         const response = await axios.get(`${tmdb_url}/trending/movie/week`, {
-            params: { api_key: tmdb_api }
+            params: { api_key: process.env.tmdb_api }
         });
 
         res.json(response.data.results);
@@ -43,7 +42,7 @@ export const getMovieDetails = async (req, res) => {
         }
 
         const response = await axios.get(`${tmdb_url}/movie/${id}`, {
-            params: { api_key: tmdb_api }
+            params: { api_key: process.env.tmdb_api }
         });
 
         if (!response.data) {
