@@ -6,12 +6,14 @@ import { useConfig } from '../context/ConfigContext';
 import { PlayCircle} from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import ResultSearch from './ResultSearch';
 
 function Home() {
   const navigate = useNavigate();
-  const {server, imageBaseUrl} = useConfig();
+  const {server, imageBaseUrl,hide} = useConfig();
   const [trendingMovie, setTrendingMovie] = useState(null);
   const [availMovies, setAvailMovies] = useState([]);
+
 
   async function getTrending() {
     try {
@@ -42,21 +44,20 @@ function Home() {
 
  
   return (
-    <div className="flex flex-col min-h-screen">
-      <div className="relative h-[60vh]">
-        {/* Background Image */}
+    <div className="flex flex-col min-h-screen bg-black ">
+       <Navbar />
+      <div className={ `relative h-[60vh] ${hide && 'hidden'}`}>
+     
         <div 
           className="absolute inset-0 bg-cover bg-center" // Changed from bg-center to bg-top
           style={{
             backgroundImage: `url(${imageBaseUrl}${trendingMovie?.backdrop_path})`,
           }}
         >
-          {/* Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/25 to-black/90" />
         </div>
 
-        {/* Content */}
-        <Navbar />
+ 
         
         <div className="relative z-10 pt-24 px-8 max-w-7xl mx-auto"> {/* Reduced padding top */}
           <h2 className="text-4xl text-white font-bold mb-3">{trendingMovie?.title}</h2>
@@ -71,8 +72,8 @@ function Home() {
         </div>
       </div>
 
-      {/* Add flex-grow to push footer down */}
-      <div className="flex-grow py-2 bg-black">
+
+      <div className={`flex-grow py-2 bg-black  ${hide && 'hidden'}`}>
        {availMovies.length > 0 && (
         <div className="container mx-auto">
           <h2 className="text-2xl font-bold text-white mb-4">Available Movies</h2>
@@ -92,7 +93,8 @@ function Home() {
         </div>
       )}
       </div>
-
+      {hide &&
+      <ResultSearch/>}
       <Footer/>
     </div>
   );

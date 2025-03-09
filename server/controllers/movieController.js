@@ -65,7 +65,7 @@ export const getMovieDetails = async (req, res) => {
 
 export const saveMovie = async (req, res) => {
     try {
-        const { title, id, poster_path, overview ,release_rate,vote_average,runtime,genres } = req.body;
+        const { title, id, poster_path, overview } = req.body;
         const existingMovie = await Movie.findOne({ movieId: id });
         if (existingMovie) {
             return res.status(400).json({ error: "Movie already added" });
@@ -74,12 +74,7 @@ export const saveMovie = async (req, res) => {
             title,
             movieId: id,
             poster_path,
-            overview,
-            release_rate,
-            vote_average,
-            runtime,
-            genres
-            
+            overview
         });
 
         const savedMovie = await movie.save();

@@ -11,7 +11,7 @@ function Movies() {
 
     async function getMovies() {
         try {
-            const res = await axios.get(`${server}/api/movies?search=${searchQuery || 'avengers'}`);
+            const res = await axios.get(`${server}/api/movies?search=${searchQuery}`);
             setData(res.data.results);
         } catch(err) {
             console.error(err)

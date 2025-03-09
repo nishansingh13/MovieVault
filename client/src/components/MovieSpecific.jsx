@@ -4,75 +4,60 @@ import { useConfig } from '../context/ConfigContext';
 import Navbar from './layout/Navbar';
 import { motion } from 'framer-motion';
 import axios from 'axios';
+import { ArrowLeft, Loader2 } from 'lucide-react';
 
 function MovieSpecific() {
-    const location = useLocation();
-    const navigate = useNavigate();
     const { imageBaseUrl, server } = useConfig();
-    const movie = location.state?.movie;
-    const [movieDetails, setMovieDetails] = useState(null);
+    const [movie, setmovie] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
     const { id } = useParams();
-
+    const navigate = useNavigate();
     useEffect(() => {
-        const fetchMovieDetails = async () => {
+        const fetchmovie = async () => {
+           
             try {
                 setLoading(true);
-                setError(null);
+              
+                const res = await axios.get(`${server}/api/movie/${id}`);
                 
-                // Check if we have a valid movie ID
-                if (!movie?.movieId && !id) {
-                    throw new Error('No movie ID provided');
-                }
-
-                const movieId = movie?.movieId || id;
-                const res = await axios.get(`${server}/api/movie/${movieId}`);
-                
-                if (res.data) {
-                    setMovieDetails(res.data);
-                } else {
-                    throw new Error('No movie data received');
-                }
+                setmovie(res.data);
             } catch (err) {
                 console.error("Error fetching movie details:", err);
-                setError(err.message);
-                // Optionally redirect to home page after error
-                // setTimeout(() => navigate('/'), 3000);
+                
             } finally {
                 setLoading(false);
             }
         };
-
-        fetchMovieDetails();
-    }, [movie?.movieId, id, server, navigate]);
+    
+        fetchmovie();
+    }, [id]);
+    
 
     if (loading) {
         return (
             <div className="min-h-screen bg-black flex items-center justify-center">
-                <div className="text-white text-xl">Loading...</div>
+                <div className="text-white  animate-spin"><Loader2/></div>
             </div>
         );
     }
 
-    if (error || !movie) {
-        return (
-            <div className="min-h-screen bg-black flex items-center justify-center">
-                <div className="text-red-500 text-xl">
-                    {error || 'Movie not found'}
-                </div>
-            </div>
-        );
-    }
+   
 
     return (
         <div className="min-h-screen relative overflow-hidden">
+           <div 
+    className="z-50 absolute top-0 left-0 p-4 cursor-pointer text-white"
+    onClick={() => navigate(-1)}
+>
+   <ArrowLeft className="w-8 h-8 scale-125" />
+</div>
+
             {/* Backdrop */}
             <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1.5 }}
-                className="fixed inset-0 z-0"
+                
             >
                 <div 
                     className="absolute inset-0 bg-cover bg-center"
@@ -83,16 +68,15 @@ function MovieSpecific() {
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/80 to-transparent" />
             </motion.div>
 
-            <Navbar />
 
             {/* Content */}
             <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 0.8 }}
-                className="relative z-10 p-8 pt-24"
+                className="relative z-10 p-8 top-4 pt-[3rem]"
             >
-                <div className="max-w-6xl mx-auto">
+                <div className="max-w-6xl mx-auto relative bottom-[3rem]">
                     <motion.div 
                         className="flex flex-col md:flex-row gap-8 backdrop-blur-sm bg-gray-900/30 rounded-xl p-6 shadow-2xl"
                         initial={{ scale: 0.95, opacity: 0 }}
@@ -140,20 +124,20 @@ function MovieSpecific() {
                             >
                                 <div className="p-4 bg-gray-900/50 rounded-lg">
                                     <p className="text-white font-semibold">Release Date</p>
-                                    <p className="text-gray-300">{movieDetails?.release_date || "Unknown"}</p>
+                                    <p className="text-gray-300">{movie?.release_date || "Unknown"}</p>
                                 </div>
                                 <div className="p-4 bg-gray-900/50 rounded-lg">
                                     <p className="text-white font-semibold">Rating</p>
-                                    <p className="text-gray-300">{movieDetails?.vote_average?.toFixed(1)}/10</p>
+                                    <p className="text-gray-300">{movie?.vote_average?.toFixed(1)}/10</p>
                                 </div>
                                 <div className="p-4 bg-gray-900/50 rounded-lg">
                                     <p className="text-white font-semibold">Runtime</p>
-                                    <p className="text-gray-300">{movieDetails?.runtime} minutes</p>
+                                    <p className="text-gray-300">{movie?.runtime} minutes</p>
                                 </div>
                                 <div className="p-4 bg-gray-900/50 rounded-lg">
                                     <p className="text-white font-semibold">Genre</p>
                                     <p className="text-gray-300">
-                                        {movieDetails?.genres?.map(g => g.name).join(", ")}
+                                        {movie?.genres?.map(g => g.name).join(", ")}
                                     </p>
                                 </div>
                             </motion.div>
@@ -184,6 +168,7 @@ function MovieSpecific() {
                 </div>
             </motion.div>
         </div>
+  
     );
 }
 
