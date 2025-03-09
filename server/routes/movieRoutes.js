@@ -4,7 +4,7 @@ import { getMoviesfromDB, searchMoviesfromDB } from '../controllers/userMovieCon
 
 const router = express.Router();
 
-router.get('/movies', searchMovies);
+router.get('/', searchMovies);
 router.post('/savemovie',saveMovie);
 router.get('/movie/:id', getMovieDetails);
 router.get('/trending', getTrendings);

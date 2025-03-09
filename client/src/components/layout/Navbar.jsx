@@ -10,7 +10,7 @@ function Navbar() {
     const searchMovies = async (query) => {
         try{
        if(query.length>0){
-        const res = await axios.get(`${server}/api/searchfromDB?search=${query}`);
+        const res = await axios.get(`${server}/api/movies/searchfromDB?search=${query}`);
         setSearchResults(res.data); // Ensure this is setting the correct data
         setHide(true);
         // console.log(query)

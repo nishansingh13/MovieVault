@@ -17,7 +17,7 @@ function Home() {
 
   async function getTrending() {
     try {
-        const res = await axios.get(`${server}/api/trending`);
+        const res = await axios.get(`${server}/api/movies/trending`);
         if(res.status === 200) {
             setTrendingMovie(res.data[1]);
         }
@@ -28,7 +28,7 @@ function Home() {
 
   async function getMoviesfromDB(){
     try {
-        const res = await axios.get(`${server}/api/getfromDB`);
+        const res = await axios.get(`${server}/api/movies/getfromDB`);
         if(res.status === 200) {
             setAvailMovies(res.data);
         }

@@ -1,10 +1,11 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
-import Login from './components/Login';
+
 import Movies from './components/Movies';
 import MovieSpecific from './components/MovieSpecific';
 import About from './components/About';
+import Login from './components/auth/Login';
 
 function App() {
   return (

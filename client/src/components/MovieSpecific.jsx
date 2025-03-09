@@ -18,7 +18,7 @@ function MovieSpecific() {
             try {
                 setLoading(true);
               
-                const res = await axios.get(`${server}/api/movie/${id}`);
+                const res = await axios.get(`${server}/api/movies/movie/${id}`);
                 
                 setmovie(res.data);
             } catch (err) {

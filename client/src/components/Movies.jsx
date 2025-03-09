@@ -20,7 +20,7 @@ function Movies() {
     async function saveData(movie) {
         try {
             console.log('Movie data being sent:', movie); 
-            const response = await axios.post(`${server}/api/savemovie`, movie);
+            const response = await axios.post(`${server}/api/movies/savemovie`, movie);
             
             if (response.status === 200) {
                 console.log("Movie saved successfully");
