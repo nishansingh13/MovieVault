@@ -5,6 +5,7 @@ import axios from 'axios'
 import { useConfig } from '../context/ConfigContext';
 import { motion } from 'framer-motion';
 import { Film, Loader2, Search, Plus } from 'lucide-react';
+import { toast } from 'sonner'
 
 function Movies() {
     const [data, setData] = useState([]);
@@ -43,12 +44,13 @@ function Movies() {
 
     async function saveData(movie) {
         try {
+            console.log(movie)
             const response = await axios.post(`${server}/api/movies/savemovie`, movie);
             if (response.status === 200) {
-                console.log("Movie saved successfully");
+                toast.success('Movie added to collection');
             }
         } catch (err) {
-            console.error("Error saving movie:", err.response?.data || err.message);
+            toast.error(err.response?.data?.error || "Failed to add movie");
         }
     }
    

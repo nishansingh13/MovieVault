@@ -4,6 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { EyeIcon ,EyeClosedIcon } from 'lucide-react';
 import axios from 'axios';
 import { useConfig } from '../../context/ConfigContext';
+import { toast } from 'sonner'
+
 function Login() {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
@@ -11,30 +13,32 @@ function Login() {
     const [password, setPassword] = useState("");
     const [isLogin, setIsLogin] = useState(true);
     const {server} = useConfig();
-    const registerUser = async()=>{
-        try{
-            const data = {username,email,password};
-            const res = await axios.post(`${server}/api/auth/register`,data);
-            if(res.status === 200){
-                console.log("User registered successfully")
+
+    const registerUser = async() => {
+        try {
+            const data = {username, email, password};
+            const res = await axios.post(`${server}/api/auth/register`, data);
+            if(res.status === 200) {
+                toast.success('Account created successfully');
+                setIsLogin(true);
             }
-        }catch(err){
-           console.log(err.response.data.error);
+        } catch(err) {
+            toast.error(err.response?.data?.error || "Something went wrong");
         }
     }
-    const loginUser = async()=>{
-        try{
-            const data = {email,password};
-           const res = await axios.post(`${server}/api/auth/login`,data);
-            const token = res.data.token;
-            if(res.status== 200){
-                localStorage.setItem("token", token);
-                console.log("User logged in successfully");
+
+    const loginUser = async() => {
+        try {
+            const data = {email, password};
+            const res = await axios.post(`${server}/api/auth/login`, data);
+            if(res.status === 200) {
+                localStorage.setItem("token", res.data.token);
+                localStorage.setItem("user", JSON.stringify(res.data));
+                toast.success('Logged in successfully');
                 navigate("/");
-                localStorage.setItem("user",JSON.stringify(res.data));  
             }
-        }catch(err){
-            console.error(err);
+        } catch(err) {
+            toast.error(err.response?.data?.error || "Invalid credentials");
         }
     }
 

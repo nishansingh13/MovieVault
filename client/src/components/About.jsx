@@ -1,9 +1,10 @@
 import React from 'react'
+import MovieCarousel from './extras/MovieCarousel'
 
 function About() {
   return (
     <div>
-      About Us 
+       <MovieCarousel   />
     </div>
   )
 }

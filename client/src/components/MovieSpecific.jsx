@@ -5,6 +5,7 @@ import Navbar from './layout/Navbar';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import { ArrowLeft, Loader2 } from 'lucide-react';
+import { toast } from 'sonner'
 
 function MovieSpecific() {
     const { imageBaseUrl, server } = useConfig();
@@ -12,6 +13,7 @@ function MovieSpecific() {
     const [loading, setLoading] = useState(true);
     const { id } = useParams();
     const navigate = useNavigate();
+    
     useEffect(() => {
         const fetchmovie = async () => {
            
@@ -31,17 +33,20 @@ function MovieSpecific() {
     
         fetchmovie();
     }, [id]);
-    const rentMovie = async()=>{
-        try{
+    const rentMovie = async() => {
+        try {
             const movieId = parseInt(id);
-            const res = await axios.post(`${server}/api/rentals`,{movieId},{
-                headers:{
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
+            const res = await axios.post(`${server}/api/rentals`, 
+                { movieId },
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
                 }
-            });
-            console.log(res.data)
-        }catch(err){
-            console.log(err)
+            );
+            toast.success('Movie rented successfully');
+        } catch(err) {
+            toast.error(err.response?.data?.error || "Failed to rent movie");
         }
     }
 

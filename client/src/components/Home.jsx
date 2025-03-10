@@ -7,13 +7,15 @@ import { PlayCircle} from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import ResultSearch from './ResultSearch';
+import MovieCarousel from './extras/MovieCarousel';
 
 function Home() {
   const navigate = useNavigate();
   const {server, imageBaseUrl,hide} = useConfig();
   const [trendingMovie, setTrendingMovie] = useState(null);
   const [availMovies, setAvailMovies] = useState([]);
-  
+  const genresToShow = [ "Action", "Comedy", "Horror",   , "Adventure" , "Animation"]; 
+
 
   async function getTrending() {
     try {
@@ -77,10 +79,10 @@ function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-black">
        <Navbar />
-      <motion.div className={ `relative h-[60vh] ${hide && 'hidden'}`} variants={trendingAnimation} initial="hidden" animate="visible">
+      <motion.div className={`relative h-[40vh] sm:h-[50vh] md:h-[60vh] ${hide && 'hidden'}`} variants={trendingAnimation} initial="hidden" animate="visible">
      
         <div 
-          className="absolute inset-0 bg-cover bg-center" // Changed from bg-center to bg-top
+          className="absolute inset-0 bg-cover bg-center" 
           style={{
             backgroundImage: `url(${imageBaseUrl}${trendingMovie?.backdrop_path})`,
           }}
@@ -90,44 +92,28 @@ function Home() {
 
  
         
-        <div className="relative z-10 pt-24 px-8 max-w-7xl mx-auto"> {/* Reduced padding top */}
-          <h2 className="text-4xl text-white font-bold mb-3">{trendingMovie?.title}</h2>
-          <p className="text-lg text-gray-200 mb-6 max-w-2xl">{trendingMovie?.overview}</p>
-          <motion.button className="bg-red-800 text-white px-6 cursor-pointer py-2 rounded-lg hover:bg-red-900 transition-colors duration-300"
-            whileTap={{ scale: 0.9 }}
-            transition={{ duration: 0.3 }}
+        <div className="relative z-10 container mx-auto px-4 pt-20 md:pt-24"> {/* Reduced padding top */}
+          <div className="max-w-4xl">
+            <h2 className="text-2xl md:text-4xl lg:text-5xl text-white font-bold mb-3">{trendingMovie?.title}</h2>
+            <p className="text-sm md:text-lg text-gray-200 mb-6 max-w-2xl line-clamp-3 md:line-clamp-none">{trendingMovie?.overview}</p>
+            <motion.button className="bg-red-800 text-white px-4 md:px-6 py-2 rounded-lg hover:bg-red-900 transition-colors duration-300 text-sm md:text-base"
+              whileTap={{ scale: 0.9 }}
+              transition={{ duration: 0.3 }}
 
-          >
-            Watch This <PlayCircle className="w-6 h-6 inline-block ml-2" />
-          </motion.button>
+            >
+              Watch This <PlayCircle className="w-4 h-4 md:w-6 md:h-6 inline-block ml-2" />
+            </motion.button>
+          </div>
         </div>
       </motion.div>
+       
 
-
-      <div className={`flex-grow py-2 bg-black  ${hide && 'hidden'}`}>
-       {availMovies.length > 0 && (
-        <motion.div className="container mx-auto">
-          <h2 className="text-2xl font-bold text-white mb-4">Available Movies</h2>
-          <motion.div 
-          className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-5 "
-          // variants={movieAnimation}
-          initial="hidden"
-          animate="visible"
-          >
-            {availMovies.map((movie) => (
-              <motion.div key={movie._id} className="space-y-2" variants={soloAnimation} >
-                <img 
-                  onClick={() => navigate(`/movie/${movie.movieId}`)}
-                  src={`${imageBaseUrl}${movie.poster_path}`} 
-                  alt={movie.title} 
-                  className="rounded-xl h-[15rem] sm:w-full object-cover object-top hover:scale-105 transition-all duration-300 cursor-pointer"
-                />
-                <h3 className="text-[0.7rem] font-bold text-white text-center">{movie.title}</h3>
-              </motion.div>
-            ))}
-          </motion.div>
-        </motion.div>
-      )}
+      <div className={`flex-grow py-4 md:py-8 bg-black  ${hide && 'hidden'}`}>
+        {genresToShow.map((genre) => (
+          availMovies.length > 0 && (
+            <MovieCarousel  movies={availMovies} genre={genre} />
+          )
+        ))}
       </div>
       {hide &&
       <ResultSearch/>}

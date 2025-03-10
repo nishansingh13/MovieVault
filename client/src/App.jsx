@@ -6,12 +6,11 @@ import MovieSpecific from './components/MovieSpecific';
 import About from './components/About';
 import Login from './components/auth/Login';
 import Rentals from './components/rentals/Rentals';
+import { Toaster } from 'sonner'
 
 function App() {
   return (
     <div>
-     
-
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
@@ -20,6 +19,7 @@ function App() {
         <Route path = "/about" element={<About/>}/>
         <Route path = "/rentals" element={<Rentals/>}/>
       </Routes>
+      <Toaster richColors position="top-center" />
     </div>
   );
 }
