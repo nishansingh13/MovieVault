@@ -2,9 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import movieRoutes from './routes/movieRoutes.js';
-import connectDB from './config/database.js';
 import userRoutes from "./routes/userRoutes.js"
 import rentalRoutes from "./routes/rentalRoutes.js"
+import { connectDB } from './config/database.js';
 dotenv.config();
 const app = express();
 connectDB();

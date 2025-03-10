@@ -15,7 +15,8 @@ export const addRental = async (req, res) => {
             return res.status(404).json({ error: "Movie not found" });
         }
 
-       
+       const exists = await Rentals.findOne({ user: userId, movie: movie._id });
+       if(exists) return res.status(400).json({ error: "Movie already rented    " });
         const rental = new Rentals({ 
             user: userId,
             movie: movie._id
