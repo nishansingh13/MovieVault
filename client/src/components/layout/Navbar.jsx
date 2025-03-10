@@ -41,6 +41,7 @@ function Navbar() {
                     <li><Link className='text-white hover:text-gray-300 transition-colors' to='/movies'>Movies</Link></li>
                     <li><Link className='text-white hover:text-gray-300 transition-colors' to='/about'>About</Link></li>
                     <li><Link className='text-white hover:text-gray-300 transition-colors' to='/contact'>Contact</Link></li>
+                    <li><Link className='text-white hover:text-gray-300 transition-colors' to='/rentals'>Rentals</Link></li>
                 </ul>
             </div>
         </nav>

@@ -26,7 +26,7 @@ export const  getTrendings = async (req, res) => {
 
         res.json(response.data.results);
     } catch (error) {
-        res.status(500).json({ error: "Failed to fetch trending movies", details: error.message });
+        res.status(500).json({ error: "Failed to fetch trending movies", details: error });
     }
 }
 

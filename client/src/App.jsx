@@ -5,6 +5,7 @@ import Movies from './components/Movies';
 import MovieSpecific from './components/MovieSpecific';
 import About from './components/About';
 import Login from './components/auth/Login';
+import Rentals from './components/rentals/Rentals';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path = "/movies" element={<Movies/>}/>
         <Route path = "/movie/:id" element={<MovieSpecific/>}/>
         <Route path = "/about" element={<About/>}/>
+        <Route path = "/rentals" element={<Rentals/>}/>
       </Routes>
     </div>
   );

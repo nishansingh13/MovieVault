@@ -31,7 +31,19 @@ function MovieSpecific() {
     
         fetchmovie();
     }, [id]);
-    
+    const rentMovie = async()=>{
+        try{
+            const movieId = parseInt(id);
+            const res = await axios.post(`${server}/api/rentals`,{movieId},{
+                headers:{
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            console.log(res.data)
+        }catch(err){
+            console.log(err)
+        }
+    }
 
     if (loading) {
         return (
@@ -152,8 +164,9 @@ function MovieSpecific() {
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
                                     className="bg-black text-white px-6 py-2 rounded-lg"
+                                    onClick={()=>rentMovie()}
                                 >
-                                    Watch Now
+                                    Rent Now
                                 </motion.button>
                                 <motion.button
                                     whileHover={{ scale: 1.05 }}
