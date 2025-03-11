@@ -4,13 +4,14 @@ import { useConfig } from '../context/ConfigContext';
 import Navbar from './layout/Navbar';
 import { motion } from 'framer-motion';
 import axios from 'axios';
-import { ArrowLeft, Loader2 } from 'lucide-react';
+import { ArrowLeft, Loader2, Rss } from 'lucide-react';
 import { toast } from 'sonner'
 
 function MovieSpecific() {
     const { imageBaseUrl, server } = useConfig();
     const [movie, setmovie] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [pageLoading,setPageLoading] = useState(true); 
+    const [loading, setLoading] = useState(false);
     const { id } = useParams();
     const navigate = useNavigate();
     
@@ -18,7 +19,7 @@ function MovieSpecific() {
         const fetchmovie = async () => {
            
             try {
-                setLoading(true);
+                setPageLoading(true);
               
                 const res = await axios.get(`${server}/api/movies/movie/${id}`);
                 
@@ -27,7 +28,7 @@ function MovieSpecific() {
                 console.error("Error fetching movie details:", err);
                 
             } finally {
-                setLoading(false);
+                setPageLoading(false);
             }
         };
     
@@ -35,6 +36,7 @@ function MovieSpecific() {
     }, [id]);
     const rentMovie = async() => {
         try {
+            setLoading(true);
             const movieId = parseInt(id);
             const res = await axios.post(`${server}/api/rentals`, 
                 { movieId },
@@ -47,10 +49,12 @@ function MovieSpecific() {
             toast.success('Movie rented successfully');
         } catch(err) {
             toast.error(err.response?.data?.error || "Failed to rent movie");
+        }finally{
+            setLoading(false);
         }
     }
 
-    if (loading) {
+    if (pageLoading) {
         return (
             <div className="min-h-screen bg-black flex items-center justify-center">
                 <div className="text-white  animate-spin"><Loader2/></div>
@@ -164,15 +168,17 @@ function MovieSpecific() {
                                 animate={{ opacity: 1 }}
                                 transition={{ delay: 1.6 }}
                                 className="flex gap-4"
-                            >
+                            >   {!loading?(
                                 <motion.button
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
-                                    className="bg-black text-white px-6 py-2 rounded-lg"
+                                    className="bg-zinc-700 text-white px-6 py-2 rounded-lg cursor-pointer"
                                     onClick={()=>rentMovie()}
                                 >
                                     Rent Now
-                                </motion.button>
+                                </motion.button>):
+                                <div  className="bg-zinc-800 text-white px-6 py-2 rounded-lg cursor-pointer "> Renting movie <Loader2 className=' animate-spin inline-block p-1'/>
+                                    </div>}
                                 <motion.button
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}

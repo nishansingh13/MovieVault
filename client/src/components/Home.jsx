@@ -17,12 +17,9 @@ function Home() {
   const genresToShow = [ "Action", "Comedy", "Horror",   , "Adventure" , "Animation"]; 
 
 
-  async function getTrending() {
+  async function getTop(movie) {
     try {
-        const res = await axios.get(`${server}/api/movies/trending`);
-        if(res.status === 200) {
-            setTrendingMovie(res.data[0]);
-        }
+      setTrendingMovie(movie);
     } catch(err) {
         console.error("Error getting trending data", err.response?.data || err.message);
     }
@@ -44,9 +41,14 @@ function Home() {
     if(!data){
       navigate("/login");
     }
-    getTrending();
     getMoviesfromDB();
+    getTop();
+  
   }, []);
+  useEffect(()=>{
+    getTop(availMovies[0]);
+
+  },[availMovies])
   
 
   const trendingAnimation ={

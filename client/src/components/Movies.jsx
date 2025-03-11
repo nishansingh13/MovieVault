@@ -12,7 +12,7 @@ function Movies() {
     const [searchQuery, setSearchQuery] = useState('');
     const [loading, setLoading] = useState(false);
     const {imageBaseUrl, server} = useConfig();
-
+    const [loadingMovieId, setLoadingMovieId] = useState(null); 
     const containerVariants = {
         hidden: { opacity: 0 },
         visible: {
@@ -44,13 +44,15 @@ function Movies() {
 
     async function saveData(movie) {
         try {
-            console.log(movie)
+            setLoadingMovieId(movie.id);
             const response = await axios.post(`${server}/api/movies/savemovie`, movie);
             if (response.status === 200) {
                 toast.success('Movie added to collection');
             }
         } catch (err) {
             toast.error(err.response?.data?.error || "Failed to add movie");
+        } finally {
+            setLoadingMovieId(null); 
         }
     }
    
@@ -132,15 +134,21 @@ function Movies() {
                                 <div className="p-4 space-y-3">
                                     <p className="text-gray-300 text-sm line-clamp-3">{movie.overview}</p>
                                     
-                                    <motion.button
-                                        whileHover={{ scale: 1.03 }}
-                                        whileTap={{ scale: 0.97 }}
-                                        onClick={() => saveData(movie)}
-                                        className="w-full py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-white flex items-center justify-center gap-2"
-                                    >
-                                        <Plus className="w-4 h-4" />
-                                        Add to Collection
-                                    </motion.button>
+                                    {loadingMovieId === movie.id ? (
+                                        <div className='w-full py-2 bg-zinc-900 cursor-pointer hover:bg-zinc-800 rounded-lg text-white flex items-center justify-center gap-2'>
+                                            Adding <Loader2 className='p-1 animate-spin'/>
+                                        </div>
+                                    ) : (
+                                        <motion.button
+                                            whileHover={{ scale: 1.03 }}
+                                            whileTap={{ scale: 0.97 }}
+                                            onClick={() => saveData(movie)}
+                                            className="w-full py-2 bg-zinc-800 cursor-pointer hover:bg-zinc-700 rounded-lg text-white flex items-center justify-center gap-2"
+                                        >
+                                            <Plus className="w-4 h-4" />
+                                            Add to Collection
+                                        </motion.button>
+                                    )}
                                 </div>
                             </motion.div>
                         ))}

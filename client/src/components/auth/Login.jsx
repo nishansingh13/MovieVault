@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
-import { EyeIcon ,EyeClosedIcon } from 'lucide-react';
+import { EyeIcon ,EyeClosedIcon, Loader2 } from 'lucide-react';
 import axios from 'axios';
 import { useConfig } from '../../context/ConfigContext';
 import { toast } from 'sonner'
@@ -12,10 +12,12 @@ function Login() {
     const navigate = useNavigate();
     const [password, setPassword] = useState("");
     const [isLogin, setIsLogin] = useState(true);
+    const [loading,setLoading] = useState(false);
     const {server} = useConfig();
 
     const registerUser = async() => {
         try {
+            setLoading(true);
             const data = {username, email, password};
             const res = await axios.post(`${server}/api/auth/register`, data);
             if(res.status === 200) {
@@ -25,10 +27,14 @@ function Login() {
         } catch(err) {
             toast.error(err.response?.data?.error || "Something went wrong");
         }
+        finally {
+            setLoading(false);
+        }
     }
 
     const loginUser = async() => {
         try {
+            setLoading(true);
             const data = {email, password};
             const res = await axios.post(`${server}/api/auth/login`, data);
             if(res.status === 200) {
@@ -39,6 +45,9 @@ function Login() {
             }
         } catch(err) {
             toast.error(err.response?.data?.error || "Invalid credentials");
+        }
+        finally{
+            setLoading(false);
         }
     }
 
@@ -126,7 +135,7 @@ function Login() {
                                     </div>
                                 </div>
                             </div>
-
+                             {!loading?(           
                             <motion.button
                             onClick={isLogin?()=>loginUser():()=>registerUser()}
                                 whileHover={{ scale: 1.02 }}
@@ -134,7 +143,9 @@ function Login() {
                                 className="w-full py-3 rounded-lg bg-purple-500 cursor-pointer text-white"
                             >
                                 {isLogin ? "Sign In" : "Sign Up"}
-                            </motion.button>
+                            </motion.button>):<div   className="flex justify-center items-center w-full py-3 rounded-lg bg-purple-700 cursor-pointer text-white">
+                                {isLogin?"Logging in":"Registering user"} <Loader2 className='animate-spin p-1'/>
+                                </div>}
                         </form>
 
                         <motion.div 
