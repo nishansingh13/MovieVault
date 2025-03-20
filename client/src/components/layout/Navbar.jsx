@@ -25,7 +25,7 @@ function Navbar() {
     };
 
     return (
-        <nav className='absolute top-0 w-full z-50 bg-gradient-to-b from-black/70 to-transparent p-4'>
+        <nav className='absolute top-0 w-full z-50  p-4'>
             <div className='container mx-auto flex justify-between items-center'>
                 <div className='text-white text-2xl font-bold'>
                     <Link to='/'>MovieVault</Link>
@@ -38,7 +38,7 @@ function Navbar() {
                 <ul className={`flex-col md:flex-row md:flex items-center space-x-4 absolute md:static top-16 left-0 w-full md:w-auto bg-black md:bg-transparent transition-all duration-300 ease-in-out ${menuOpen ? 'flex' : 'hidden'}`}>
                     <li onClick={() => setInputShow(true)}>
                         <div className='flex'>
-                            <SearchIcon className={`relative ${inputShow && 'left-6 z-10 top-[0.2rem]'} text-white hover:text-gray-300 w-5 h-5 cursor-pointer transition-colors`} />
+                            <SearchIcon className={`relative ${inputShow && 'left-6 z-10 top-[0.2rem]'} text-white  w-5 h-5 cursor-pointer transition-colors hover:*:text-gray-300`} />
                             <input type='text' onChange={(e) => searchMovies(e.target.value)} className={`relative bg-black backdrop-blur-md text-white text-[80%] rounded transition-all duration-300 ease-in-out ${inputShow ? 'w-48 px-7 py-1' : 'w-0 p-0'}`} />
                         </div>
                     </li>
