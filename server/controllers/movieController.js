@@ -1,16 +1,16 @@
-import axios from 'axios';
-import Movie from '../models/Movie.js';
-import { genreMap } from '../config/database.js';
+const axios = require('axios');
+const Movie = require('../models/Movie');
+const { genreMap } = require('../config/database');
 
 const tmdb_url = "https://api.themoviedb.org/3";
 
-export const searchMovies = async (req, res) => {
+const searchMovies = async (req, res) => {
     try {
         const { search } = req.query;
         if (!search) return res.status(400).json({ error: "Movie title is required" });
 
         const response = await axios.get(`${tmdb_url}/search/movie`, {
-            params: { api_key: process.env.tmdb_api, query:search }
+            params: { api_key: process.env.tmdb_api, query: search }
         });
 
         res.json(response.data);
@@ -19,7 +19,7 @@ export const searchMovies = async (req, res) => {
     }
 };
 
-export const  getTrendings = async (req, res) => {
+const getTrendings = async (req, res) => {
     try {
         const response = await axios.get(`${tmdb_url}/trending/movie/week`, {
             params: { api_key: process.env.tmdb_api }
@@ -29,16 +29,16 @@ export const  getTrendings = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: "Failed to fetch trending movies", details: error });
     }
-}
+};
 
-export const getMovieDetails = async (req, res) => {
+const getMovieDetails = async (req, res) => {
     try {
         const { id } = req.params;
-        
+
         if (!id) {
-            return res.status(400).json({ 
+            return res.status(400).json({
                 error: "Movie ID is required",
-                details: "No movie ID provided in the request" 
+                details: "No movie ID provided in the request"
             });
         }
 
@@ -47,23 +47,23 @@ export const getMovieDetails = async (req, res) => {
         });
 
         if (!response.data) {
-            return res.status(404).json({ 
+            return res.status(404).json({
                 error: "Movie not found",
-                details: `No movie found with ID: ${id}` 
+                details: `No movie found with ID: ${id}`
             });
         }
 
         res.json(response.data);
     } catch (error) {
         console.error('Movie details error:', error);
-        res.status(500).json({ 
-            error: "Failed to fetch movie details", 
-            details: error.message 
+        res.status(500).json({
+            error: "Failed to fetch movie details",
+            details: error.message
         });
     }
 };
-export const saveMovie = async (req, res) => {
-    
+
+const saveMovie = async (req, res) => {
     try {
         const { title, id, poster_path, overview, genre_ids, release_date } = req.body;
 
@@ -90,3 +90,5 @@ export const saveMovie = async (req, res) => {
         res.status(500).json({ error: "Failed to save movie", details: error.message });
     }
 };
+
+module.exports = { searchMovies, getTrendings, getMovieDetails, saveMovie };

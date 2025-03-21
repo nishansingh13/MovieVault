@@ -1,23 +1,23 @@
-import Rentals from "../models/Rentals.js"; 
-import Movies from "../models/Movie.js";
+const Rentals = require("../models/Rentals");
+const Movies = require("../models/Movie");
 
-export const addRental = async (req, res) => {
+const addRental = async (req, res) => {
     try {
         const userId = req.user.id;
-        const { movieId } = req.body; 
+        const { movieId } = req.body;
 
         if (!userId || !movieId) {
             return res.status(400).json({ error: "User ID and Movie ID are required" });
         }
-        const movie = await Movies.findOne({ movieId});
+        const movie = await Movies.findOne({ movieId });
 
         if (!movie) {
             return res.status(404).json({ error: "Movie not found" });
         }
 
-       const exists = await Rentals.findOne({ user: userId, movie: movie._id });
-       if(exists) return res.status(400).json({ error: "Movie already rented    " });
-        const rental = new Rentals({ 
+        const exists = await Rentals.findOne({ user: userId, movie: movie._id });
+        if (exists) return res.status(400).json({ error: "Movie already rented" });
+        const rental = new Rentals({
             user: userId,
             movie: movie._id
         });
@@ -30,12 +30,14 @@ export const addRental = async (req, res) => {
     }
 };
 
-export const getRentals = async(req,res)=>{
-    try{
+const getRentals = async (req, res) => {
+    try {
         const id = req.user.id;
-        const exist = await Rentals.find({user:id}).populate("user" ,"-password").populate("movie");
+        const exist = await Rentals.find({ user: id }).populate("user", "-password").populate("movie");
         res.json(exist);
-    }catch(error){
+    } catch (error) {
         res.status(500).json({ error: "Failed to fetch rentals", details: error.message });
     }
-}
+};
+
+module.exports = { addRental, getRentals };

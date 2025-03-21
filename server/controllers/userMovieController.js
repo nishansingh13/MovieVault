@@ -1,18 +1,19 @@
-import axios from 'axios';
-import Movie from '../models/Movie.js';
+const axios = require('axios');
+const Movie = require('../models/Movie');
 
-export const getMoviesfromDB = async (req, res) => {
+const getMoviesfromDB = async (req, res) => {
     try {
         const movies = await Movie.find();
         res.json(movies);
     } catch (error) {
         res.status(500).json({ error: "Failed to fetch movies", details: error.message });
     }
-}
-export const searchMoviesfromDB = async (req, res) => {
+};
+
+const searchMoviesfromDB = async (req, res) => {
     try {
-        const {search} = req.query;
-        if(!search) {
+        const { search } = req.query;
+        if (!search) {
             return res.status(400).json({ error: "Search query is required" });
         }
         const movies = await Movie.find({ title: { $regex: search, $options: "i" } });
@@ -20,4 +21,6 @@ export const searchMoviesfromDB = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: "Failed to fetch movies", details: error.message });
     }
-}
+};
+
+module.exports = { getMoviesfromDB, searchMoviesfromDB };

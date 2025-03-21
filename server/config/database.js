@@ -1,6 +1,7 @@
-import mongoose from "mongoose";
-import colors from 'colors';
-export const genreMap = {
+const mongoose = require("mongoose");
+const colors = require("colors");
+
+const genreMap = {
     28: "Action",
     12: "Adventure",
     16: "Animation",
@@ -21,14 +22,15 @@ export const genreMap = {
     10752: "War",
     37: "Western"
 };
- 
-export const connectDB= async()=>{
-    try{
+
+const connectDB = async () => {
+    try {
         const conn = await mongoose.connect(process.env.MONGO_URI);
         console.log(`MongoDB connected : ${conn.connection.host}`.cyan.underline);
-    }
-    catch(err){
-        console.log(`Error is ${err.message}`.red); 
+    } catch (err) {
+        console.log(`Error is ${err.message}`.red);
         process.exit(1);
     }
-}
+};
+
+module.exports = { genreMap, connectDB };

@@ -1,15 +1,14 @@
-import express from 'express';
-import { getMovieDetails, getTrendings, saveMovie, searchMovies } from '../controllers/movieController.js';
-import { getMoviesfromDB, searchMoviesfromDB } from '../controllers/userMovieController.js';
+const express = require('express');
+const { getMovieDetails, getTrendings, saveMovie, searchMovies } = require('../controllers/movieController');
+const { getMoviesfromDB, searchMoviesfromDB } = require('../controllers/userMovieController');
 
 const router = express.Router();
 
 router.get('/', searchMovies);
-router.post('/savemovie',saveMovie);
+router.post('/savemovie', saveMovie);
 router.get('/movie/:id', getMovieDetails);
 router.get('/trending', getTrendings);
 router.get('/getfromDB', getMoviesfromDB);
-router.get('/searchfromDB',searchMoviesfromDB);
-// router.get('/movie/:id/credits', getMovieCredits);
+router.get('/searchfromDB', searchMoviesfromDB);
 
-export default router;
+module.exports = router;
