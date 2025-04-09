@@ -39,5 +39,22 @@ const getRentals = async (req, res) => {
         res.status(500).json({ error: "Failed to fetch rentals", details: error.message });
     }
 };
+const getRentalById = async (req, res) => {
+    try {
+        const {id} = req.body;
+        const rental = await Rentals.findByIdAndUpdate(id, {
+            startedAt: new Date(),
+            expiresAt : new Date(Date.now() + 2 * 24 * 60 * 60 * 1000) 
+            
+        },{new:true});
+ 
 
-module.exports = { addRental, getRentals };
+        if (!rental) {
+            return res.status(404).json({ error: "Rental not found" });
+        }
+        res.json(rental)
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch rental", details: error.message });
+    }
+}
+module.exports = { addRental, getRentals,getRentalById };

@@ -62,7 +62,18 @@ const getMovieDetails = async (req, res) => {
         });
     }
 };
+const getTrailer = async(req,res)=>{
+        try{
+            const {id} = req.body;
+            const response = await axios.get(`${tmdb_url}/movie/${id}/videos`,{
+                params: { api_key: process.env.tmdb_api }
+            });
+            res.json(response.data.results.length>0? response.data.results[0].key : {error:"No trailer found"});
 
+        }catch(error){
+            res.status(500).json({error:"Failed to fetch trailer",error});
+        }
+}
 const saveMovie = async (req, res) => {
     try {
         const { title, id, poster_path, overview, genre_ids, release_date } = req.body;
@@ -91,4 +102,4 @@ const saveMovie = async (req, res) => {
     }
 };
 
-module.exports = { searchMovies, getTrendings, getMovieDetails, saveMovie };
+module.exports = { searchMovies, getTrendings, getMovieDetails, saveMovie , getTrailer };

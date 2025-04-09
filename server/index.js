@@ -1,14 +1,26 @@
 const express = require('express');
 const cors = require('cors');
+const cron = require('node-cron')
 const dotenv = require('dotenv');
 const movieRoutes = require('./routes/movieRoutes');
 const userRoutes = require("./routes/userRoutes");
 const rentalRoutes = require("./routes/rentalRoutes");
 const { connectDB } = require('./config/database');
+const Rentals = require('./models/Rentals');
 
 dotenv.config();
 const app = express();
 connectDB();
+cron.schedule('0 0 * * *', async () => {
+    const now = new Date();
+    try {
+      const result = await Rentals.deleteMany({ expiresAt: { $lte: now } });
+      console.log(`Deleted ${result.deletedCount} expired rentals at ${now.toISOString()}`);
+    } catch (err) {
+      console.error(' Error deleting expired rentals:', err.message);
+    }
+  });
+  
 app.use(cors());
 app.use(express.json());
 app.use('/api/movies', movieRoutes);
