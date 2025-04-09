@@ -12,6 +12,7 @@ export const ConfigProvider = ({ children }) => {
     const [hide, setHide] = useState(false);
 
     const config = {
+       
         server: "https://movie-rental-c3xq.onrender.com",
         imageBaseUrl: "https://image.tmdb.org/t/p/original",
         isSearching,

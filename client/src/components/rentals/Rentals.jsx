@@ -10,7 +10,22 @@ function Rentals() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const display = async (rental)=>{
+    const query = rental.movie.movieId;
 
+    try{
+      const res = await axios.put(`${server}/api/rentals/rentalbyId`,{id:rental._id});
+      console.log(res.data)
+      const nres = await axios.post(`${server}/api/movies/trailer`,{id:query})
+      const data = nres.data;
+      window.open(`https://www.youtube.com/watch?v=${data}`)
+      
+
+    }catch(err){
+      console.error(err)
+
+    }
+  }
   const getRentals = async () => {
     try {
       setLoading(true);
@@ -72,7 +87,11 @@ function Rentals() {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={getRentals}
+            onClick={() => {
+              getRentals();
+             
+            }}
+            
             disabled={loading}
             className="px-6 py-2 cursor-pointer  rounded-lg bg-zinc-800 text-white font-medium  flex items-center gap-2"
           >
@@ -137,6 +156,14 @@ function Rentals() {
                   <motion.button
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
+                   onClick={()=>{
+                    display(rental);
+                   
+
+                  }
+                }
+                  
+                  
                     className={`w-full py-2 cursor-pointer mt-2 rounded-lg ${
                       rental.startedAt 
                         ? 'bg-purple-900/50 text-purple-200'
