@@ -23,9 +23,10 @@ cron.schedule('0 0 * * *', async () => {
   });
   
   app.use(cors({
-    origin: 'https://movie-vauit.vercel.app',
+    origin: ['https://movie-vauit.vercel.app', 'http://localhost:5173'],
     credentials: true,
   }));
+  
   
 app.use(express.json());
 app.use('/api/movies', movieRoutes);
