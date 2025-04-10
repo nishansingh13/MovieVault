@@ -100,6 +100,7 @@ const saveMovie = async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: "Failed to save movie", details: error.message });
     }
+    
 };
 
 module.exports = { searchMovies, getTrendings, getMovieDetails, saveMovie , getTrailer };

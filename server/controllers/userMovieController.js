@@ -22,5 +22,22 @@ const searchMoviesfromDB = async (req, res) => {
         res.status(500).json({ error: "Failed to fetch movies", details: error.message });
     }
 };
+const deleteMoviefromDB = async(req,res)=>{
+    try{
+        const { id } = req.body;
+        
+        if (!id) {
+            return res.status(400).json({ error: "Movie ID is required" });
+        }
+        const movie = await Movie.findByIdAndDelete(id);
+        if (!movie) {
+            return res.status(404).json({ error: "Movie not found" });
+        }
+        res.status(200) . json({ message: "Movie deleted successfully",movie });  
+    }catch(error){
+        res.status(500).json({ error: "Failed to fetch movies", details: error.message });
+    }
+    
+}
 
-module.exports = { getMoviesfromDB, searchMoviesfromDB };
+module.exports = { getMoviesfromDB, searchMoviesfromDB,deleteMoviefromDB };
