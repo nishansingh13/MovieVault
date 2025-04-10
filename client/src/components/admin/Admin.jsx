@@ -18,7 +18,7 @@ function Admin() {
    
     <div className='bg-black min-h-screen flex justify-center items-center'>
       <motion.div 
-        className='bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-xl p-8 md:p-12 shadow-lg shadow-purple-900/20 max-w-3xl w-full'
+        className='bg-gray-900/50 border border-gray-800 rounded-xl p-8 md:p-12 shadow-lg shadow-purple-900/20 max-w-3xl w-full'
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4 }}

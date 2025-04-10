@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 import axios from 'axios';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { toast } from 'sonner'
-
 function MovieSpecific() {
     const { imageBaseUrl, server } = useConfig();
     const [movie, setmovie] = useState(null);
@@ -45,7 +44,7 @@ function MovieSpecific() {
                     }
                 }
             );
-            toast.success('Movie rented successfully');
+         
             await axios.post(`${server}/api/sendMail`, 
                 {
                   movieName: movie.title
@@ -57,6 +56,7 @@ function MovieSpecific() {
                   }
                 }
               );
+              toast.success('Movie rented successfully');
               
         } catch(err) {
             toast.error(err.response?.data?.error || "Failed to rent movie");
@@ -82,9 +82,7 @@ function MovieSpecific() {
     onClick={() => navigate(-1)}
 >
    <ArrowLeft className="w-8 h-8 scale-125" />
-</div>
-
-           
+</div>     
             <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -101,7 +99,7 @@ function MovieSpecific() {
             </motion.div>
 
 
-            {/* Content */}
+       
             <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -115,7 +113,7 @@ function MovieSpecific() {
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{ delay: 0.8 }}
                     >
-                        {/* Poster */}
+                     
                         <motion.div 
                             className="w-full md:w-1/3"
                             whileHover={{ scale: 1.05 }}
@@ -128,7 +126,7 @@ function MovieSpecific() {
                             />
                         </motion.div>
 
-                        {/* Details */}
+                    
                         <div className="w-full md:w-2/3 space-y-6">
                             <motion.h1 
                                 initial={{ y: -20, opacity: 0 }}

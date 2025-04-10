@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { Film, Code, Github, Linkedin, Mail } from 'lucide-react'
 
 function About() {
-  // Animation variants
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -21,44 +21,25 @@ function About() {
     visible: {
       y: 0,
       opacity: 1,
-      transition: { type: "spring", stiffness: 100 }
+      transition: { type: "spring" }
     }
   }
 
-  const teamMembers = [
-    {
-      name: "Nishan",
-      role: "Team Leader & Full Stack Developer",
-      description: "Leads the project architecture and development. Specializes in React frontend and Express backend integration.",
-      image: "https://avatars.githubusercontent.com/u/random1?v=4" 
-    },
-    {
-      name: "Mayur",
-      role: "Backend Developer",
-      description: "Manages database design and API development. Expert in MongoDB, Express, and authentication systems.",
-      image: "https://avatars.githubusercontent.com/u/random2?v=4" // Replace with actual image URL
-    },
-    {
-      name: "Lovish",
-      role: "Frontend Developer",
-      description: "Creates responsive UI components and implements animations. Skilled in React, TailwindCSS, and Framer Motion.",
-      image: "https://avatars.githubusercontent.com/u/random3?v=4" // Replace with actual image URL
-    }
-  ]
+  
 
   return (
     <div className="min-h-screen bg-black text-white">
       <Navbar />
       
-      {/* Hero Section */}
+ 
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.5 }}
         className="relative pt-24 pb-16"
       >
-        <div className="absolute inset-0 bg-gradient-radial from-purple-900/20 to-transparent opacity-50" />
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="" />
+        <div className=" mx-auto px-4 ">
           <motion.div 
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -73,7 +54,6 @@ function About() {
         </div>
       </motion.div>
 
-      {/* Project Description */}
       <motion.div 
         variants={containerVariants}
         initial="hidden"
@@ -100,12 +80,12 @@ function About() {
                 MovieVault offers a seamless movie rental experience.
               </p>
               <div className="flex flex-wrap gap-3 mt-6">
-                <span className="px-3 py-1 bg-purple-900/50 text-purple-200 rounded-full text-sm">React</span>
-                <span className="px-3 py-1 bg-purple-900/50 text-purple-200 rounded-full text-sm">Node.js</span>
-                <span className="px-3 py-1 bg-purple-900/50 text-purple-200 rounded-full text-sm">MongoDB</span>
-                <span className="px-3 py-1 bg-purple-900/50 text-purple-200 rounded-full text-sm">Express</span>
-                <span className="px-3 py-1 bg-purple-900/50 text-purple-200 rounded-full text-sm">Tailwind CSS</span>
-                <span className="px-3 py-1 bg-purple-900/50 text-purple-200 rounded-full text-sm">Framer Motion</span>
+                <span className="px-3 py-1 bg-purple-800 text-purple-200 rounded-full text-sm">React</span>
+                <span className="px-3 py-1 bg-purple-800 text-purple-200 rounded-full text-sm">Node.js</span>
+                <span className="px-3 py-1 bg-purple-800 text-purple-200 rounded-full text-sm">MongoDB</span>
+                <span className="px-3 py-1 bg-purple-800 text-purple-200 rounded-full text-sm">Express</span>
+                <span className="px-3 py-1 bg-purple-800 text-purple-200 rounded-full text-sm">Tailwind CSS</span>
+                <span className="px-3 py-1 bg-purple-800 text-purple-200 rounded-full text-sm">Framer Motion</span>
               </div>
             </div>
           </div>
@@ -150,7 +130,7 @@ function About() {
         </div>
       </motion.div>
 
-      {/* Contact Section */}
+   
       <motion.div 
         variants={containerVariants}
         initial="hidden"
@@ -159,7 +139,7 @@ function About() {
       >
         <motion.div 
           variants={itemVariants}
-          className="bg-gradient-to-br from-purple-900/40 to-gray-900/40 backdrop-blur-sm border border-gray-800 rounded-xl p-8 text-center"
+          className="border border-gray-800 rounded-xl p-8 text-center"
         >
           <h2 className="text-2xl font-bold text-white mb-4">Get In Touch</h2>
           <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
