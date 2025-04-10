@@ -38,15 +38,16 @@ function Home() {
 
   useEffect(() => {
     const data = localStorage.getItem("user");
-    if(!data){
-      navigate("/login");
+    const parsedData = JSON.parse(data);
+    if(!data || parsedData?.role==1){
+      navigate("/login"); 
     }
     getMoviesfromDB();
     getTop();
   
   }, []);
   useEffect(()=>{
-    getTop(availMovies[0]);
+    getTop(availMovies[4]);
 
   },[availMovies])
   
@@ -98,10 +99,10 @@ function Home() {
           <div className="max-w-4xl">
             <h2 className="text-2xl md:text-4xl lg:text-5xl text-white font-bold mb-3">{trendingMovie?.title}</h2>
             <p className="text-sm md:text-lg text-gray-200 mb-6 max-w-2xl line-clamp-3 md:line-clamp-none">{trendingMovie?.overview}</p>
-            <motion.button className="bg-red-800 text-white px-4 md:px-6 py-2 rounded-lg hover:bg-red-900 transition-colors duration-300 text-sm md:text-base"
+            <motion.button className="bg-red-800 cursor-pointer text-white px-4 md:px-6 py-2 rounded-lg hover:bg-red-900 transition-colors duration-300 text-sm md:text-base"
               whileTap={{ scale: 0.9 }}
               transition={{ duration: 0.3 }}
-
+              onClick={() => navigate(`/movie/${trendingMovie?.movieId}`)}  
             >
               Watch This <PlayCircle className="w-4 h-4 md:w-6 md:h-6 inline-block ml-2" />
             </motion.button>

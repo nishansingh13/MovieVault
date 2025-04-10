@@ -38,10 +38,22 @@ function Login() {
             const data = {email, password};
             const res = await axios.post(`${server}/api/auth/login`, data);
             if(res.status === 200) {
+                console.log(res.data);
                 localStorage.setItem("token", res.data.token);
                 localStorage.setItem("user", JSON.stringify(res.data));
-                toast.success('Logged in successfully');
+                localStorage.setItem("isAdmin", res.data.role);
+                if(res.data.role === 1) {
+                   toast.success('Admin logged in successfully');
+                }
+                else{
+                    toast.success('User logged in successfully');      
+                }
+                if(res.data.role === 1) {
+                    navigate("/admin");
+                }
+                else{
                 navigate("/");
+                }
             }
         } catch(err) {
             toast.error(err.response?.data?.error || "Invalid credentials");

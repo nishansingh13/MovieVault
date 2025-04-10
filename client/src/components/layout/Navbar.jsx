@@ -9,7 +9,6 @@ function Navbar() {
     const [menuOpen, setMenuOpen] = useState(false);
     const { setHide, setSearchResults, server } = useConfig();
     const navigate = useNavigate();
-
     const searchMovies = async (query) => {
         try {
             if (query.length > 0) {
@@ -43,9 +42,7 @@ function Navbar() {
                         </div>
                     </li>
                     <li><Link className='text-white hover:text-gray-300 transition-colors' to='/'>Home</Link></li>
-                    <li><Link className='text-white hover:text-gray-300 transition-colors' to='/movies'>Movies</Link></li>
                     <li><Link className='text-white hover:text-gray-300 transition-colors' to='/about'>About</Link></li>
-                    <li><Link className='text-white hover:text-gray-300 transition-colors' to='/contact'>Contact</Link></li>
                     <li><Link className='text-white hover:text-gray-300 transition-colors' to='/rentals'>Rentals</Link></li>
                 </ul>
             </div>
