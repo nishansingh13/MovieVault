@@ -47,7 +47,7 @@ function Home() {
   
   }, []);
   useEffect(()=>{
-    getTop(availMovies[1]);
+    getTop(availMovies[0]);
 
   },[availMovies])
   
