@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation, useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useConfig } from '../context/ConfigContext';
-import Navbar from './layout/Navbar';
 import { motion } from 'framer-motion';
 import axios from 'axios';
-import { ArrowLeft, Loader2, Rss } from 'lucide-react';
+import { ArrowLeft, Loader2 } from 'lucide-react';
 import { toast } from 'sonner'
 
 function MovieSpecific() {
@@ -14,7 +13,7 @@ function MovieSpecific() {
     const [loading, setLoading] = useState(false);
     const { id } = useParams();
     const navigate = useNavigate();
-    
+
     useEffect(() => {
         const fetchmovie = async () => {
            
@@ -47,7 +46,18 @@ function MovieSpecific() {
                 }
             );
             toast.success('Movie rented successfully');
-             await axios.post(`${server}/api/sendMail`,{movieName : movie.title})
+            await axios.post(`${server}/api/sendMail`, 
+                {
+                  movieName: movie.title
+                
+                }, 
+                {
+                  headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                  }
+                }
+              );
+              
         } catch(err) {
             toast.error(err.response?.data?.error || "Failed to rent movie");
         }finally{
@@ -74,7 +84,7 @@ function MovieSpecific() {
    <ArrowLeft className="w-8 h-8 scale-125" />
 </div>
 
-            {/* Backdrop */}
+           
             <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
