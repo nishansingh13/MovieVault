@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const movieRoutes = require('./routes/movieRoutes');
 const userRoutes = require("./routes/userRoutes");
 const rentalRoutes = require("./routes/rentalRoutes");
+const sendMail = require("./routes/sendMail")
 const { connectDB } = require('./config/database');
 const Rentals = require('./models/Rentals');
 
@@ -21,11 +22,16 @@ cron.schedule('0 0 * * *', async () => {
     }
   });
   
-app.use(cors());
+  app.use(cors({
+    origin: 'https://movie-vauit.vercel.app',
+    credentials: true,
+  }));
+  
 app.use(express.json());
 app.use('/api/movies', movieRoutes);
 app.use('/api/auth', userRoutes);
 app.use('/api/rentals', rentalRoutes);
+app.use('/api/sendMail',sendMail)
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
