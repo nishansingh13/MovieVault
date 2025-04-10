@@ -5,7 +5,7 @@ const addRental = async (req, res) => {
     try {
         const userId = req.user.id;
         const { movieId } = req.body;
-
+        
         if (!userId || !movieId) {
             return res.status(400).json({ error: "User ID and Movie ID are required" });
         }

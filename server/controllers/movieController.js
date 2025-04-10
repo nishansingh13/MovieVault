@@ -79,11 +79,15 @@ const saveMovie = async (req, res) => {
         const { title, id, poster_path, overview, genre_ids, release_date } = req.body;
 
         const existingMovie = await Movie.findOne({ movieId: id });
-        if (existingMovie) {
+        if (existingMovie && existingMovie.isDeleted === true) {
+            await Movie.findByIdAndUpdate(existingMovie._id, { isDeleted: false });
+           
+        }
+        else if(existingMovie){
             return res.status(400).json({ error: "Movie already added" });
         }
 
-        // Convert genre IDs to genre names
+       
         const genres = genre_ids.map(genreId => genreMap[genreId] || "Unknown");
 
         const movie = new Movie({
@@ -91,7 +95,7 @@ const saveMovie = async (req, res) => {
             movieId: id,
             poster_path,
             overview,
-            genre: genres, // ✅ Now storing actual genre names
+            genre: genres, 
             release_date
         });
 

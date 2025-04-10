@@ -3,7 +3,8 @@ const Movie = require('../models/Movie');
 
 const getMoviesfromDB = async (req, res) => {
     try {
-        const movies = await Movie.find();
+        const movies = await Movie.find({isDeleted:false});
+      
         res.json(movies);
     } catch (error) {
         res.status(500).json({ error: "Failed to fetch movies", details: error.message });
@@ -29,7 +30,9 @@ const deleteMoviefromDB = async(req,res)=>{
         if (!id) {
             return res.status(400).json({ error: "Movie ID is required" });
         }
-        const movie = await Movie.findByIdAndDelete(id);
+        const movie = await Movie.findByIdAndUpdate(id, { isDeleted: true }, { new: true });
+       
+
         if (!movie) {
             return res.status(404).json({ error: "Movie not found" });
         }
