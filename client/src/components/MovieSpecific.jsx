@@ -47,6 +47,7 @@ function MovieSpecific() {
                 }
             );
             toast.success('Movie rented successfully');
+             await axios.post(`${server}/api/sendMail`,{movieName : movie.title})
         } catch(err) {
             toast.error(err.response?.data?.error || "Failed to rent movie");
         }finally{
