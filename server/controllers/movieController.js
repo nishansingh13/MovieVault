@@ -81,7 +81,7 @@ const saveMovie = async (req, res) => {
         const existingMovie = await Movie.findOne({ movieId: id });
         if (existingMovie && existingMovie.isDeleted === true) {
             await Movie.findByIdAndUpdate(existingMovie._id, { isDeleted: false });
-           
+           return res.status(200).json({ message: "Movie added successfully" });
         }
         else if(existingMovie){
             return res.status(400).json({ error: "Movie already added" });
