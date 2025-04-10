@@ -23,6 +23,7 @@ function RemoveMovies() {
                 const res = await axios.delete(`${server}/api/movies/removemovie`,
                     {data: { id: movie._id } }
                 );
+                console.log(res.data);
                 if (res.status === 200) {
                     setMovies(movies.filter(m => m._id !== movie._id));
                     setFilteredMovies(filteredMovies.filter(m => m._id !== movie._id));
@@ -64,8 +65,11 @@ function RemoveMovies() {
         try{
             setLoading(true);
             const res = await axios.get(`${server}/api/movies/getfromDB`);
+            
             if(res.status === 200) {
+                
                 setMovies(res.data);
+                
                 setFilteredMovies(res.data);
             }
         }catch(err){

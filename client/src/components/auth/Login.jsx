@@ -38,7 +38,7 @@ function Login() {
             const data = {email, password};
             const res = await axios.post(`${server}/api/auth/login`, data);
             if(res.status === 200) {
-                console.log(res.data);
+                
                 localStorage.setItem("token", res.data.token);
                 localStorage.setItem("user", JSON.stringify(res.data));
                 localStorage.setItem("isAdmin", res.data.role);

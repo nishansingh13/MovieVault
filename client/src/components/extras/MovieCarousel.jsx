@@ -13,7 +13,7 @@ function MovieCarousel({ movies, genre }) {
       <h2 className="text-xl md:text-2xl font-bold text-white mb-4">{namingarray[genre] } Movies</h2>
       <Carousel className="relative">
         <CarouselContent>
-          {filteredMovies.map((movie) => ( // Show max 10 movies per genre
+          {filteredMovies.map((movie) => ( 
             <CarouselItem key={movie._id} className="basis-1/3 md:basis-1/4 lg:basis-1/6">
               <div className="aspect-[2/3] overflow-hidden rounded-xl">
                 <img
