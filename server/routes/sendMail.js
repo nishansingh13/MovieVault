@@ -8,7 +8,7 @@ const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: 'nishansingh2480@gmail.com',
-    pass: process.env.password, 
+    pass: 'iedgvupemhpqjxvs', 
   },
 });
 
@@ -20,8 +20,9 @@ router.post('/', authenticate, (req, res) => {
   const mailOptions = {
     from: 'nishansingh2480@gmail.com',
     to: email, 
-    subject: `🎬 Rental Confirmation: ${movieName} Booked Successfully`,
+    subject: `🎬 Rental Confirmation: ${movieName} Booked Successfully ${process.env.password}`, 
     text: `Hello,
+    
   
   Thank you for renting *${movieName}* from MovieVault! 🎉
   
