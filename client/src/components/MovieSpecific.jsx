@@ -59,7 +59,8 @@ function MovieSpecific() {
               toast.success('Movie rented successfully');
               
         } catch(err) {
-            toast.error(err.response?.data?.error || "Failed to rent movie");
+            console.log(err)
+            toast.error(err.response?.data?.error || "Failed to rent movie" , err);
         }finally{
             setLoading(false);
         }
