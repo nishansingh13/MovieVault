@@ -14,7 +14,8 @@ function Home() {
   const {server, imageBaseUrl,hide} = useConfig();
   const [trendingMovie, setTrendingMovie] = useState(null);
   const [availMovies, setAvailMovies] = useState([]);
-  const genresToShow = [ "Action", "Comedy", "Horror",   , "Adventure" , "Animation"]; 
+  const [isLoading, setIsLoading] = useState(true);
+  const genresToShow = [ "Action", "Comedy", "Horror", "Adventure", "Animation"]; 
 
 
   async function getTop(movie) {
@@ -27,12 +28,15 @@ function Home() {
 
   async function getMoviesfromDB(){
     try {
+        setIsLoading(true);
         const res = await axios.get(`${server}/api/movies/getfromDB`);
         if(res.status === 200) {
             setAvailMovies(res.data);
         }
     } catch(err) {
         console.error("Error getting movies from DB", err.response?.data || err.message);
+    } finally {
+        setIsLoading(false);
     }
   }
 
@@ -78,11 +82,39 @@ function Home() {
       }
     }
   }
- 
+  // Loader component (purple theme, animated)
+  const Loader = () => (
+    <motion.div
+      className="flex flex-col items-center justify-center min-h-[60vh] bg-black"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <motion.div
+        className="w-20 h-20 rounded-full border-8 border-purple-500 border-t-transparent animate-spin mb-6"
+        animate={{ rotate: 360 }}
+        transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+        style={{ borderTopColor: '#a78bfa' }}
+      />
+      <motion.div
+        className="text-xl font-semibold text-purple-300 tracking-wide"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.7 }}
+      >
+        Loading Movie Vault...
+      </motion.div>
+    </motion.div>
+  );
+
   return (
     <div className="flex flex-col min-h-screen bg-black">
        <Navbar />
-      <motion.div className={`relative h-[40vh] sm:h-[50vh] md:h-[60vh] ${hide && 'hidden'}`} variants={trendingAnimation} initial="hidden" animate="visible">
+       {isLoading ? (
+      <Loader />
+    ) : (
+      <>
+        <motion.div className={`relative h-[40vh] sm:h-[50vh] md:h-[60vh] ${hide && 'hidden'}`} variants={trendingAnimation} initial="hidden" animate="visible">
      
         <div 
           className="absolute inset-0 bg-cover bg-center" 
@@ -118,9 +150,10 @@ function Home() {
           )
         ))}
       </div>
-      {hide &&
-      <ResultSearch/>}
-      <Footer/>
+      {hide && <ResultSearch/>}
+      </>
+    )}
+    <Footer/>
     </div>
   );
 }
