@@ -33,6 +33,9 @@ app.use('/api/movies', movieRoutes);
 app.use('/api/auth', userRoutes);
 app.use('/api/rentals', rentalRoutes);
 app.use('/api/sendMail',sendMail)
+app.get('/api/ping', (req, res) => {
+    res.send('pong');
+});
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
