@@ -20,7 +20,7 @@ router.post('/', authenticate, (req, res) => {
   const mailOptions = {
     from: 'nishansingh2480@gmail.com',
     to: email, 
-    subject: `🎬 Rental Confirmation: ${movieName} Booked Successfully ${process.env.password}`, 
+    subject: `🎬 Rental Confirmation: ${movieName} Booked Successfully`, 
     text: `Hello,
     
   
