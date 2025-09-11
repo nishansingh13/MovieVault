@@ -13,7 +13,7 @@ export const ConfigProvider = ({ children }) => {
 
     const config = {
     
-        server: "https://movievault-pxb0.onrender.com",
+        server: "https://movievault-yyad.onrender.com",
         imageBaseUrl: "https://image.tmdb.org/t/p/original",
         isSearching,
         setIsSearching,
