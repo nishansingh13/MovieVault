@@ -7,9 +7,11 @@ const userRoutes = require("./routes/userRoutes");
 const rentalRoutes = require("./routes/rentalRoutes");
 const sendMail = require("./routes/sendMail")
 const { connectDB } = require('./config/database');
+const { validateEnv } = require('./config/validateEnv');
 const Rentals = require('./models/Rentals');
 
 dotenv.config();
+validateEnv();
 const app = express();
 connectDB();
 cron.schedule('0 0 * * *', async () => {
