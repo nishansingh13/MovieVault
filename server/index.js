@@ -8,6 +8,7 @@ const rentalRoutes = require("./routes/rentalRoutes");
 const sendMail = require("./routes/sendMail")
 const { connectDB } = require('./config/database');
 const { validateEnv } = require('./config/validateEnv');
+const { errorHandler, notFound } = require('./middleware/errorHandler');
 const Rentals = require('./models/Rentals');
 
 dotenv.config();
@@ -38,6 +39,10 @@ app.use('/api/sendMail',sendMail)
 app.get('/api/ping', (req, res) => {
     res.send('pong');
 });
+
+// Error handling middleware (must be last)
+app.use(notFound);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
