@@ -9,6 +9,7 @@ const sendMail = require("./routes/sendMail")
 const { connectDB } = require('./config/database');
 const { validateEnv } = require('./config/validateEnv');
 const { errorHandler, notFound } = require('./middleware/errorHandler');
+const { apiLimiter } = require('./middleware/rateLimiter');
 const Rentals = require('./models/Rentals');
 
 dotenv.config();
@@ -32,6 +33,7 @@ cron.schedule('0 0 * * *', async () => {
   
   
 app.use(express.json());
+app.use(apiLimiter); // Apply rate limiting to all routes
 app.use('/api/movies', movieRoutes);
 app.use('/api/auth', userRoutes);
 app.use('/api/rentals', rentalRoutes);
