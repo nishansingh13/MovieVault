@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const cron = require('node-cron')
+const morgan = require('morgan');
 const dotenv = require('dotenv');
 const movieRoutes = require('./routes/movieRoutes');
 const userRoutes = require("./routes/userRoutes");
@@ -15,6 +16,14 @@ const Rentals = require('./models/Rentals');
 dotenv.config();
 validateEnv();
 const app = express();
+
+// Logging middleware
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+} else {
+  app.use(morgan('combined'));
+}
+
 connectDB();
 cron.schedule('0 0 * * *', async () => {
     const now = new Date();
