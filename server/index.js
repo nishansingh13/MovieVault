@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const cron = require('node-cron')
 const morgan = require('morgan');
+const helmet = require('helmet');
 const dotenv = require('dotenv');
 const movieRoutes = require('./routes/movieRoutes');
 const userRoutes = require("./routes/userRoutes");
@@ -16,6 +17,9 @@ const Rentals = require('./models/Rentals');
 dotenv.config();
 validateEnv();
 const app = express();
+
+// Security middleware
+app.use(helmet());
 
 // Logging middleware
 if (process.env.NODE_ENV === 'development') {
