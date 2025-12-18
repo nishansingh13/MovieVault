@@ -10,6 +10,7 @@ const rentalRoutes = require("./routes/rentalRoutes");
 const sendMail = require("./routes/sendMail")
 const { connectDB } = require('./config/database');
 const { validateEnv } = require('./config/validateEnv');
+const corsOptions = require('./config/corsConfig');
 const { errorHandler, notFound } = require('./middleware/errorHandler');
 const { apiLimiter } = require('./middleware/rateLimiter');
 const Rentals = require('./models/Rentals');
@@ -39,10 +40,7 @@ cron.schedule('0 0 * * *', async () => {
     }
   });
   
-  app.use(cors({
-    origin: ['https://movie-vauit.vercel.app', 'http://localhost:5173'],
-    credentials: true,
-  }));
+app.use(cors(corsOptions));
   
   
 app.use(express.json());
