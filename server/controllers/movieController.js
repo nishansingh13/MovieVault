@@ -4,6 +4,12 @@ const { genreMap } = require('../config/database');
 
 const tmdb_url = "https://api.themoviedb.org/3";
 
+/**
+ * Search for movies by title
+ * @route GET /api/movies/search
+ * @param {string} search - Movie title to search for
+ * @returns {Object} Search results from TMDB API
+ */
 const searchMovies = async (req, res) => {
     try {
         const { search } = req.query;
@@ -19,6 +25,11 @@ const searchMovies = async (req, res) => {
     }
 };
 
+/**
+ * Get trending movies for the week
+ * @route GET /api/movies/trending
+ * @returns {Array} List of trending movies
+ */
 const getTrendings = async (req, res) => {
     try {
         const response = await axios.get(`${tmdb_url}/trending/movie/week`, {
@@ -31,6 +42,12 @@ const getTrendings = async (req, res) => {
     }
 };
 
+/**
+ * Get detailed information about a specific movie
+ * @route GET /api/movies/:id
+ * @param {string} id - TMDB movie ID
+ * @returns {Object} Detailed movie information
+ */
 const getMovieDetails = async (req, res) => {
     try {
         const { id } = req.params;
