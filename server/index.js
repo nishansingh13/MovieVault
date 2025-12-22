@@ -3,6 +3,7 @@ const cors = require('cors');
 const cron = require('node-cron')
 const morgan = require('morgan');
 const helmet = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize');
 const dotenv = require('dotenv');
 const movieRoutes = require('./routes/movieRoutes');
 const userRoutes = require("./routes/userRoutes");
@@ -44,6 +45,7 @@ app.use(cors(corsOptions));
   
   
 app.use(express.json());
+app.use(mongoSanitize()); // Sanitize data to prevent MongoDB injection
 app.use(apiLimiter); // Apply rate limiting to all routes
 app.use('/api/movies', movieRoutes);
 app.use('/api/auth', userRoutes);
