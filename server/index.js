@@ -9,6 +9,7 @@ const movieRoutes = require('./routes/movieRoutes');
 const userRoutes = require("./routes/userRoutes");
 const rentalRoutes = require("./routes/rentalRoutes");
 const sendMail = require("./routes/sendMail")
+const { healthCheck } = require('./controllers/healthController');
 const { connectDB } = require('./config/database');
 const { validateEnv } = require('./config/validateEnv');
 const corsOptions = require('./config/corsConfig');
@@ -51,6 +52,7 @@ app.use('/api/movies', movieRoutes);
 app.use('/api/auth', userRoutes);
 app.use('/api/rentals', rentalRoutes);
 app.use('/api/sendMail',sendMail)
+app.get('/api/health', healthCheck);
 app.get('/api/ping', (req, res) => {
     res.send('pong');
 });
