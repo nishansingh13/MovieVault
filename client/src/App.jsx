@@ -22,6 +22,8 @@ function App() {
         <Route path = "/rentals" element={<Rentals/>}/>
         <Route path ="/admin" element={<Admin/>}/>
         <Route path = "/admin/remove-movie" element={<RemoveMovies/>}/>
+
+
       </Routes>
       <Toaster richColors position="top-center" />
     </div>
